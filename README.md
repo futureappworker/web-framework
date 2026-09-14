@@ -1,0 +1,466 @@
+# Web Framework
+
+## Node.js 環境執行 TypeScript
+
+安裝開發依賴：
+```bash
+pnpm add -D typescript tsx @types/node
+pnpm exec tsc --init
+```
+
+設定 `tsconfig.json`：
+```json
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ES2023",
+    "strict": true,
+    "esModuleInterop": true,
+    "ignoreDeprecations": "6.0"
+  }
+}
+```
+
+設定 `package.json`：
+```json
+{
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  }
+}
+```
+
+## 安裝 Vitest
+
+```bash
+pnpm add -D vitest
+```
+
+在 `package.json` 的 scripts 區塊加入：
+```json
+{
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run"
+  }
+}
+```
+
+設定 `vitest.config.ts`
+```ts
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+  test: {
+    environment: 'node'
+  },
+})
+```
+
+
+## 安裝 Biome
+
+```bash
+pnpm add -D @biomejs/biome
+pnpm biome init
+```
+
+設定 `biome.json`
+```json
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "noNonNullAssertion": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn"
+      }
+    }
+  },
+
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded"
+    }
+  }
+}
+```
+
+在 `package.json` 的 scripts 區塊加入：
+```json
+{
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run",
+    "lint": "biome lint .",
+    "format": "biome format . --write",
+    "check": "biome check . --write"
+  }
+}
+```
+
+設定 `.vscode/settings.json`
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "never"
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false
+}
+```
+
+VSCode 安裝 extension
+```
+Biome
+```
+
+## Forces 範例
+
+### 依模式語意命名 class
+
+替換算法 → Strategy
+
+處理請求 → Handler
+
+接收事件 → Listener
+
+### 策略模式 ( Strategy Pattern )
+
+```
+Force-BV (原始型):
+在 <操作> 中可抽換多種行為之一
+可以選擇多種執行行為之一
+好比 <行為1>, <行為2>... (不同種行為)
+且未來會持續擴充新的行為
+```
+
+```
+Force-擴充性:
+擴充新的 <行為> 時
+不必修改既有的 <Context>
+```
+
+```
+Problem:
+如何讓 Client 能夠簡單地
+抽換或是擴充行為
+```
+
+### 樣板方法 ( Template Method )
+
+```
+Force-重復程式:
+這多道行為之間, 有部分重復
+```
+
+```
+Force-BV:
+但這些重復的程式碼中, 又有部分行為是不同的
+```
+
+```
+Force:
+開發同類型行為時, 被迫以撰寫重復程式, 再加以改寫的方式實作
+希望能只實作變動之處就好
+```
+
+```
+Problem:
+如何在開發新的類似的 <行為> 時
+能只撰寫變動的部分就好了
+```
+
+### 責任鏈模式 ( Chain of Responsibility Pattern, CoR )
+
+```
+Force-BV (輸入對比型):
+在 <操作> 執行時
+系統得先解析 <輸入參數> 的類型
+每類對應的處理方式不同
+
+好比: <行為1>, <行為2>, ...
+且未來會持續擴充新的 <輸入參數> 類型, 及對應的處理方式
+```
+
+```
+Force-擴充性:
+擴充新的 <輸入參數> 類型 or 每類對應的處理方式時
+不必修改既有的 <Context>
+```
+
+```
+Problem:
+如何解耦 <Context> 和所有訊息的處理者
+以致於能夠有彈性地，在系統中決定要支援哪些訊息的處理
+```
+
+### 觀察者模式 ( Observer Pattern )
+
+```
+Force-BV (響應式):
+於 <Context> 中 <做某件事> 而得到 <某種結果> 後
+<多個類別，如 A, B, C> 都需要執行一些行為來響應此事件
+好比 <A> 需要做 <響應式行為 A> ...等等
+```
+
+```
+Force-擴充性:
+擴充新的 <觀察者> or <響應式行為> 時
+不必修改既有的 <Context>
+```
+
+```
+Problem:
+如何有彈性地, 讓多個物件能持續觀察著某另一物件的最新狀態?
+而當狀態改變時, 所有觀察者物件都能立即響應?
+```
+
+### 指令模式 ( Command Pattern )
+
+```
+Force-行為賦予:
+<Context> 有多個操作 (e.g. 操作 1 & 2)，操作 1 & 2 都未定義行為
+我們希望能動態設定操作 1 & 2 的行為
+設定成對 <Receiver A, B, C> 類別的操作呼叫
+好比 設定成當 <操作1> 執行時，要去呼叫 A 的 任務 A 操作
+```
+
+```
+Force-擴充性:
+當擴充新的 <Receiver>，並且想要動態將 <Context> 的某操作
+設定成呼叫新的 <Receiver> 的操作時
+不必修改 <Context>, 以及既有的 <Receiver>
+```
+
+```
+Problem:
+如何把每一道指令都轉變為一個物件
+讓我們能夠將這些指令物件
+用有彈性的方式, 挷定在 Application 的各項操作上?
+```
+
+### 狀態模式 ( State Pattern )
+
+```
+Force-BV (狀態型):
+當 <Context> 中處於不同的狀態下, 會引起多道行為的變化
+好比 <A>, <B> 兩者狀態下的 <操作1> 的行為不同
+以及 <A>, <B>, <C> 三者狀態下的 <操作2> 的行為也不同
+(越多例子, 代表變化越強)
+```
+
+```
+Force-擴充性:
+擴充新的 <狀態> 時
+不必修改既有的 <Context>
+```
+
+```
+Problem:
+如何設計程式
+使工程師能夠專注維護類別，在不同狀態下的個別行為
+並允許該類別物件，能隨著狀態的改變，而抽換自身行為?
+```
+
+### 門面模式 ( Facade Pattern )
+
+```
+Force-易用性:
+希望能夠簡化 <模組> 的使用方式
+Client 為了 <某意圖>，被迫了解與 <A, B, C, D> 的各介面互動，才得以實現此意圖
+對於一般 Client 來說，易用性 (Usability) 實在太差了
+```
+
+```
+Force-高結構複雜度:
+1. <模組> 中，存在許多的類別/介面 (Interface)
+2. 類別/介面之間的關係錯綜複雜，組成較不規律
+   ( 好比沒有明確的分層或命名/職責慣例 )
+```
+
+```
+Problem:
+要如何讓 Client 在完全不知曉這些介面的前提下
+輕而易舉地實現 <某意圖>
+```
+
+### 複合模式 ( Composite Pattern )
+
+```
+Force-樹狀結構:
+1. 結構存在至少一個遞迴關聯
+2. 嚴格階層關係，不能存在循環關聯，每個物件最多只能有一個父親
+```
+
+```
+Force-結構變動性:
+結構中的組成類別 or 類別之間的關係，可能會新增或改變
+好比未來可能會有更多不同的 <Composite> or <Leaf>
+```
+
+```
+Force-擴充性:
+未來擴充不同的 <Composite> or <Leaf> 等等
+新的結構成員類別時
+皆不必修改 Client 所依賴的既有程式碼
+```
+
+```
+Problem:
+要如何讓 <Context> 有良好的擴充性?
+讓 <Composite> or <Leaf> 都能夠不受結構的複雜度和變動性影響
+```
+
+### 裝飾者模式 ( Decorator Pattern )
+
+```
+Force-BV (N+1 變化):
+<操作> 執行時分成兩個階段依序執行
+階段一可以執行 <A, B, C> 中的任意行為的排列組合
+而階段二，則再從 <1, 2, 3> 選定一種行為執行
+```
+
+```
+Force-組合爆炸:
+N+1 變化會形成非常多種行為組合
+如果將每一種組合封裝至一個類別中
+則類別數量會指數級成長，非常難以維護
+```
+
+```
+Force-擴充性:
+擴充新的 <階段一 or 階段二> 的行為時
+不必修改既有的 <Context>
+```
+
+```
+Problem:
+如何允許 Client
+有彈性的組出 <n> 種 <某行為> 的組合呢?
+不必修改既有程式碼的前提下
+擴充新的組合
+```
+
+### 轉接器模式 ( Adapter Pattern )
+
+```
+Force-透明度:
+不能修改目標介面
+```
+
+```
+Force-重複利用性 ( Reusability ):
+希望重複利用 <Adaptee> (某另一介面) 的 <目標能力>
+來實現 <Client> 的意圖
+```
+
+```
+Force-相容性 ( Compatibility ):
+由於 <Adaptee> 是第三方的依賴，不允許 <Client> 修改其原始碼
+使得 <Adaptee> 不相容、無法實作 <目標> 介面
+```
+
+### 代理人模式 ( Proxy Pattern )
+
+```
+Force-存取控制:
+當 <Client> 存取 <Subject> 的 <操作> 時
+希望能添加額外的控制行為
+好比 : 權限控制、虛擬控制、遠端存取 等等
+```
+
+```
+Force-透明度:
+不必修改 <Subject> 介面的定義
+也能輕鬆添加 存取控制
+```
+
+```
+Force:
+基於某種相容性，或者是維護性原則
+希望能不修改 <RealSubject> 的既有程式碼
+```
+
+### 單體模式 ( Singleton Pattern )
+
+```
+Force-資源昂貴:
+<Instance> 被創建時
+需消耗十分昂貴的資源 ( e.g., 耗時長 or 記憶體使用量大 )
+```
+
+```
+Force:
+必須確保，<Instance> 只會被創建一次
+```
+
+```
+Force-併發存取:
+存在多位 Client 可能併發依賴 <Instance>
+而因此同時併發創建 <Instance>
+```
+
+### 工廠方法 ( Factory Method )
+
+```
+Force-生命週期約束:
+由於 <產品> 在使用上的一些限制
+迫使你必須在 (1) 適當的時機才能創建它
+或是 (2) 必須重複創建多份該介面的實作類別
+```
+
+```
+Force-擴充性:
+在擴充 <產品> 的種類時
+不必修改 <Context>
+```
+
+### 抽象工廠方法 ( Abstract Factory Method )
+
+```
+Force-一致性:
+<Context> 實際使用的一組 <工廠 1,2,3 > 的實作類別
+不生產的 <產品 1,2,3 > 的實體必須要有一致性的實作
+才得以實現某一高階意圖，或者會有實作上的衝突
+```
+
+```
+Force:
+套用了多次工廠方法，於是催生出了
+多種 <工廠> 以及對應的 <產品> 的介面及實作
+```
