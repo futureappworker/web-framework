@@ -1,4 +1,4 @@
-import { User } from '../scenario-simulation/resources/User'
+import { User, type UserBody } from '../resources/User'
 
 export class UserService {
   private users: User[] = []
@@ -7,7 +7,7 @@ export class UserService {
     return this.users.some((u) => u.getEmail() === email)
   }
 
-  createUser(body: any): User {
+  createUser(body: UserBody): User {
     // 生成唯一的 id
     // 會員編號 (Id)：該會員的流水號，從 1 開始算起，如果此系統中目前存在 3 位會員，則在此時註冊會員的話會獲得會員編號 4
     const nextId = this.users.length + 1

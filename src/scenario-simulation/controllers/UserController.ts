@@ -1,6 +1,5 @@
 import type { HttpRequest } from '../../domains/HttpRequest'
-import type { UserService } from '../services/UserService'
-import type { HttpHandlerResponse } from '../../types/HttpHandler'
+import type { UserService } from '../../scenario-simulation/services/UserService'
 import { DuplicateEmailError } from '../errors/duplicate-email/DuplicateEmailError'
 import { RegistrationFormatIncorrectError } from '../errors/registration-format-incorrect/RegistrationFormatIncorrectError'
 
@@ -23,8 +22,8 @@ export class UserController {
     this.userService = userService
   }
 
-  registerUser(httpRequest: HttpRequest): HttpHandlerResponse {
-    const body = httpRequest.getBody()
+  registerUser(httpRequest: HttpRequest) {
+    const body = httpRequest.readBodyAsObject()
     const email: string = body.email
     const name: string = body.name
     const password: string = body.password

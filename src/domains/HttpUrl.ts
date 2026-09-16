@@ -40,4 +40,8 @@ export class HttpUrl {
   getQueryString(): string {
     return this.queryString
   }
+
+  toString(): string {
+    return `${this.scheme}://${this.host}:${this.port}${this.path}${this.queryString}`
+  }
 }

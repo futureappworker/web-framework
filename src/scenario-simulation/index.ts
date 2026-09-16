@@ -1,10 +1,10 @@
 import { WebFramework } from '../domains/WebFramework'
-import { UserService } from './services/UserService'
 import { UserController } from './controllers/UserController'
 import { DuplicateEmailError } from './errors/duplicate-email/DuplicateEmailError'
 import { DuplicateEmailErrorResponse } from './errors/duplicate-email/DuplicateEmailErrorResponse'
 import { RegistrationFormatIncorrectError } from './errors/registration-format-incorrect/RegistrationFormatIncorrectError'
 import { RegistrationFormatIncorrectErrorResponse } from './errors/registration-format-incorrect/RegistrationFormatIncorrectErrorResponse'
+import { UserService } from './services/UserService'
 
 const webFramework = new WebFramework({
   port: 3000,

@@ -1,5 +1,4 @@
 import { shouldBeWithinRange } from '../utils/shouldBeWithinRange'
-import type { HttpRequest } from './HttpRequest'
 import type { HttpResponse } from './HttpResponse'
 import type { Plugin } from './Plugin'
 import { RouterUtil } from './RouterUtil'
@@ -74,11 +73,11 @@ export class HttpServer {
     return this.routerUtil
   }
 
-  start() {
-    // TODO
-  }
+  // start() {
+  //   // TODO
+  // }
 
-  request(httpRequest: HttpRequest): HttpResponse {
-    // TODO
-  }
+  // request(httpRequest: HttpRequest): HttpResponse {
+  //   // TODO
+  // }
 }

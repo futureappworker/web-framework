@@ -1,20 +1,24 @@
 import type { StatusLine } from './StatusLine'
 
-type HttpResponseProps = {
+type HttpResponseProps<TBody> = {
   statusLine: StatusLine
   headers?: Map<string, string>
-  body: string
+  body: TBody
 }
 
-export class HttpResponse {
+export class HttpResponse<TBody> {
   private statusLine: StatusLine
   private headers: Map<string, string>
-  private body!: any
+  private body: TBody
 
-  constructor({ statusLine, headers = new Map(), body }: HttpResponseProps) {
+  constructor({
+    statusLine,
+    headers = new Map(),
+    body,
+  }: HttpResponseProps<TBody>) {
     this.statusLine = statusLine
     this.headers = headers
-    this.setBody(body)
+    this.body = body
   }
 
   getStatusLine(): StatusLine {
@@ -25,14 +29,11 @@ export class HttpResponse {
     return this.headers
   }
 
-  getBody(): string {
+  getBody(): TBody {
     return this.body
   }
 
-  setBody(body: string) {
-    // 預設使用 application/json 格式來序列化 HTTP Response Body
-    const resultBody = JSON.stringify(body)
-    // TODO: 要新增其它的序列化格式支援
-    this.body = resultBody
+  setBody(body: TBody): void {
+    this.body = body
   }
 }

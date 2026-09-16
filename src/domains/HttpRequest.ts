@@ -14,35 +14,29 @@ export class HttpRequest {
 
   constructor({ requestLine, headers, body }: HttpRequestProps) {
     this.requestLine = requestLine
-    this.headers = headers
+    this.headers = new Map(
+      [...headers].map(([key, value]) => [key.toLowerCase(), value]),
+    )
     this.body = body
   }
 
   getUrl(): string {
-    return (
-      this.requestLine.getHttpUrl().getScheme() +
-      '://' +
-      this.requestLine.getHttpUrl().getHost() +
-      ':' +
-      this.requestLine.getHttpUrl().getPort() +
-      this.requestLine.getHttpUrl().getPath() +
-      this.requestLine.getHttpUrl().getQueryString()
-    )
+    return this.requestLine.getHttpUrl().toString()
   }
 
   getHttpMethod(): HttpMethodType {
     return this.requestLine.getHttpMethod()
   }
 
-  getHttlpVersion(): string {
+  getHttpVersion(): string {
     return this.requestLine.getHttpVersion()
   }
 
   getHeaderByKey(key: string): string {
-    return this.headers.get(key) || ''
+    return this.headers.get(key.toLowerCase()) ?? ''
   }
 
-  readBodyAsObject(type: string): string {
+  readBodyAsObject(type: string = 'application/json') {
     // 讀取 HTTP Request body，並解序列化轉成某型別
     // type 用來指定欲解序列化的目標型別
     // 序列化的意思 =>
@@ -55,16 +49,20 @@ export class HttpRequest {
     // 遇到尚未支援的 content-type 格式，則此時會拋出例外，中斷請求
     // 此時應該拋出 500 HTTP Status Code 表示例外
     // TODO
+    if (type === 'application/json') {
+      return JSON.parse(this.body)
+    }
+
+    return this.body
   }
 
-  // 預設使用 application/json 格式來解序列化 HTTP Request Body
-  getBody(): any {
-    return this.readBodyAsObject('application/json')
+  getBody(): string {
+    return this.body
   }
 
-  getPathVariableByName(name: string): string {
-    // TODO
-  }
+  // getPathVariableByName(name: string): string {
+  //   // TODO
+  // }
 
   getQueryVariableByName(name: string): string {
     // 獲得此次請求的查詢變數 (Query Variable)
@@ -74,6 +72,6 @@ export class HttpRequest {
     const params = new URLSearchParams(
       queryString.startsWith('?') ? queryString.slice(1) : queryString,
     )
-    return params.get(name) || ''
+    return params.get(name) ?? ''
   }
 }

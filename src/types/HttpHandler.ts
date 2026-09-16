@@ -1,9 +1,11 @@
 import type { HttpRequest } from '../domains/HttpRequest'
 
-export type HttpHandlerResponse = {
+export type HttpHandlerResponse<TBody = unknown> = {
   status: number
   headers?: Map<string, string>
-  body: any
+  body: TBody
 }
 
-export type HttpHandler = (httpRequest: HttpRequest) => HttpHandlerResponse
+export type HttpHandler<TBody = unknown> = (
+  httpRequest: HttpRequest,
+) => HttpHandlerResponse<TBody>

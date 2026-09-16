@@ -11,4 +11,12 @@ export class StatusLine {
     this.httpVersion = httpVersion
     this.statusCode = statusCode
   }
+
+  getHttpVersion() {
+    return this.httpVersion
+  }
+
+  getStatusCode() {
+    return this.statusCode
+  }
 }

@@ -1,12 +1,15 @@
 import { shouldBeEmail } from '../../utils/shouldBeEmail'
 import { shouldBeWithinRange } from '../../utils/shouldBeWithinRange'
 
-type UserProps = {
-  id?: string
+export type UserBody = {
   email: string
   name: string
   password: string
 }
+
+type UserProps = {
+  id?: string
+} & UserBody
 
 export class User {
   private id: string | null
