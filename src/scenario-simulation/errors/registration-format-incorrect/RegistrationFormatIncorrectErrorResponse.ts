@@ -2,7 +2,7 @@ import { HttpResponse } from '../../../domains/HttpResponse'
 import { StatusLine } from '../../../domains/StatusLine'
 import { RegistrationFormatIncorrectError } from './RegistrationFormatIncorrectError'
 
-export class RegistrationFormatIncorrectErrorResponse extends HttpResponse {
+export class RegistrationFormatIncorrectErrorResponse extends HttpResponse<string> {
   private static instance: RegistrationFormatIncorrectErrorResponse
 
   private constructor() {

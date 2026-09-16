@@ -14,7 +14,7 @@ export class HttpServer {
   private port!: number
   private webApp!: WebApp
   private routerUtil: RouterUtil
-  private errorHttpResponseMap: Map<Error, HttpResponse> = new Map()
+  private errorHttpResponseMap: Map<Error, HttpResponse<string>> = new Map()
   private plugins: Plugin[] = []
 
   private constructor({ port, webApp }: HttpServerProps) {
@@ -64,7 +64,7 @@ export class HttpServer {
 
   registerErrorHttpResponse(
     errorType: Error,
-    errorHttpResponse: HttpResponse,
+    errorHttpResponse: HttpResponse<string>,
   ): void {
     this.errorHttpResponseMap.set(errorType, errorHttpResponse)
   }
@@ -73,9 +73,9 @@ export class HttpServer {
     return this.routerUtil
   }
 
-  // start() {
-  //   // TODO
-  // }
+  start() {
+    // TODO
+  }
 
   // request(httpRequest: HttpRequest): HttpResponse {
   //   // TODO

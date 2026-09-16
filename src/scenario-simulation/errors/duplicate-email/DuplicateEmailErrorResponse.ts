@@ -2,7 +2,7 @@ import { HttpResponse } from '../../../domains/HttpResponse'
 import { StatusLine } from '../../../domains/StatusLine'
 import { DuplicateEmailError } from './DuplicateEmailError'
 
-export class DuplicateEmailErrorResponse extends HttpResponse {
+export class DuplicateEmailErrorResponse extends HttpResponse<string> {
   private static instance: DuplicateEmailErrorResponse
 
   private constructor() {

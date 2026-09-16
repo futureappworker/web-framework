@@ -34,7 +34,7 @@ export class WebFramework {
 
   registerErrorHttpResponse(
     errorType: Error,
-    errorHttpResponse: HttpResponse,
+    errorHttpResponse: HttpResponse<string>,
   ): void {
     this.httpServer.registerErrorHttpResponse(errorType, errorHttpResponse)
   }
